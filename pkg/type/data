@@ -1,0 +1,27 @@
+package type
+
+import "time"
+
+type Dir struct {
+	ID       int64     `json:"id"`
+	Hostname string    `json:"hostname"`
+	Domain   string    `json:"domain"`
+	LastSeen time.Time `json:"lastseen"`
+}
+
+type File struct {
+	ID       int64     `json:"id"`
+	Name     string    `json:"name"`
+	URL      string    `json:"url"`
+	Page     string    `json:"page"`
+	LastSeen time.Time `json:"lastseen"`
+}
+
+type Database struct {
+	Dirs  []Dir  `json:"dirs"`
+	Files []File `json:"files"`
+}
+
+func main() {
+
+}
