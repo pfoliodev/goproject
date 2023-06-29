@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net"
 
@@ -15,10 +16,13 @@ func main() {
 	}
 	defer l.Close()
 
+	fmt.Println("Serveur en attente de connexions...")
+
 	for {
 		conn, err := l.Accept()
 		if err != nil {
-			log.Fatal(err)
+			log.Println(err)
+			continue
 		}
 
 		go handleConnection(conn)
@@ -28,30 +32,43 @@ func main() {
 func handleConnection(conn net.Conn) {
 	defer conn.Close()
 
-	// Exemple de réception d'une requête GetUrlRequest
-	var request protocols.GetUrlRequest
-	err := json.NewDecoder(conn).Decode(&request)
-	if err != nil {
-		log.Println(err)
-		return
-	}
+	fmt.Println("Nouvelle connexion acceptée")
 
-	// Traitez la requête reçue
+	for {
+		// Lecture du message du client
+		var request interface{}
+		err := json.NewDecoder(conn).Decode(&request)
+		if err != nil {
+			log.Println("Erreur de lecture du message:", err)
+			return
+		}
 
-	// Exemple d'envoi de la réponse GetUrlResponse
-	response := protocols.GetUrlRequest{
-		// Définissez ici les champs de la réponse
-	}
-
-	resJSON, err := json.Marshal(response)
-	if err != nil {
-		log.Println(err)
-		return
-	}
-
-	_, err = conn.Write(resJSON)
-	if err != nil {
-		log.Println(err)
-		return
+		// Traitement du type de message
+		switch msg := request.(type) {
+		case protocols.GetUrlRequest:
+			// Logique métier pour la demande d'URL
+			response := protocols.GetUrlResponse{
+				URL: "https://www.example.com",
+			}
+			err = json.NewEncoder(conn).Encode(response)
+			if err != nil {
+				log.Println("Erreur d'envoi de la réponse:", err)
+				return
+			}
+		case protocols.CreateUrlRequest:
+			// Logique métier pour la création d'URL
+			response := protocols.CreateUrlResponse{
+				Success: true,
+			}
+			err = json.NewEncoder(conn).Encode(response)
+			if err != nil {
+				log.Println("Erreur d'envoi de la réponse:", err)
+				return
+			}
+		// ... Ajouter d'autres cas pour les autres types de messages ...
+		default:
+			log.Println("Type de message non pris en charge")
+			return
+		}
 	}
 }

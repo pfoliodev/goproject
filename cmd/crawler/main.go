@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net"
 
@@ -17,28 +16,36 @@ func main() {
 	defer conn.Close()
 
 	// Exemple d'envoi d'une requête GetUrlRequest
-	getURLReq := protocols.GetUrlRequest{
-		Params: "example",
+	getURLRequest := protocols.GetUrlRequest{
+		Params: "plus vieux",
 	}
-
-	reqJSON, err := json.Marshal(getURLReq)
+	err = json.NewEncoder(conn).Encode(getURLRequest)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Erreur d'envoi de la requête:", err)
 	}
 
-	_, err = conn.Write(reqJSON)
+	// Lecture de la réponse GetUrlResponse
+	var getURLResponse protocols.GetUrlResponse
+	err = json.NewDecoder(conn).Decode(&getURLResponse)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Erreur de lecture de la réponse:", err)
 	}
 
-	// Exemple de réception de la réponse GetUrlResponse
-	var response protocols.GetUrlRequest
-	err = json.NewDecoder(conn).Decode(&response)
+	// Logique métier pour la réponse GetUrlResponse
+
+	// Exemple d'envoi d'une requête CreateUrlRequest
+	createURLRequest := protocols.CreateUrlRequest{
+		URL: "https://www.google.com",
+	}
+	err = json.NewEncoder(conn).Encode(createURLRequest)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Erreur d'envoi de la requête:", err)
 	}
 
-	// Traitez la réponse reçue
-	fmt.Println(response)
-	fmt.Printf("%#v\n", response)
+	// Lecture de la réponse CreateUrlResponse
+	var createURLResponse protocols.CreateUrlResponse
+	err = json.NewDecoder(conn).Decode(&createURLResponse)
+	if err != nil {
+		log.Fatal("Erreur de lecture de la réponse:", err)
+	}
 }
