@@ -5,10 +5,41 @@ type GetUrlRequest struct {
 }
 
 type GetUrlResponse struct {
+	URL string
+}
+
+type CreateUrlRequest struct {
+	URL string
+}
+
+type CreateUrlResponse struct {
+	Success bool
+}
+
+type UpdateUrlRequest struct {
+	URL string
+}
+
+type UpdateUrlResponse struct {
+	Success bool
 }
 
 type CreateFileRequest struct {
+	URL  string
+	Name string
+	Page string
 }
 
 type CreateFileResponse struct {
+	Success bool
+}
+
+type UpdateFileRequest struct {
+	URL  string
+	Name string
+	Page string
+}
+
+type UpdateFileResponse struct {
+	Success bool
 }

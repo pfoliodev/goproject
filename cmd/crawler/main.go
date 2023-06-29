@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net"
 
@@ -38,4 +39,6 @@ func main() {
 	}
 
 	// Traitez la réponse reçue
+	fmt.Println(response)
+	fmt.Printf("%#v\n", response)
 }

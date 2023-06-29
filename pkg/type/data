@@ -23,5 +23,24 @@ type Database struct {
 }
 
 func main() {
+	// Example usage
+	database := Database{
+		Dirs: []Dir{
+			{ID: 1, Hostname: "example.com", Domain: "example", LastSeen: time.Now()},
+			{ID: 2, Hostname: "test.com", Domain: "test", LastSeen: time.Now()},
+		},
+		Files: []File{
+			{ID: 1, Name: "file1.txt", URL: "https://example.com/file1.txt", Page: "page1", LastSeen: time.Now()},
+			{ID: 2, Name: "file2.txt", URL: "https://example.com/file2.txt", Page: "page2", LastSeen: time.Now()},
+		},
+	}
 
+	// Accessing the data
+	for _, dir := range database.Dirs {
+		// Process each dir
+	}
+
+	for _, file := range database.Files {
+		// Process each file
+	}
 }
