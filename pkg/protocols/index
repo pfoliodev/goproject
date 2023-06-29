@@ -1,0 +1,14 @@
+package protocols
+
+type GetUrlRequest struct {
+	Params string
+}
+
+type GetUrlResponse struct {
+}
+
+type CreateFileRequest struct {
+}
+
+type CreateFileResponse struct {
+}
